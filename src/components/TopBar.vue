@@ -11,7 +11,6 @@
             <img src="@/assets/icons/notification.svg" alt="" class="notification-img">
             <div class="notification-text">3</div>
             </span>
-          <notifications v-if="showNotification" />
         </div>
         <div class="topbar-item user">
         <div class="user-image">
@@ -25,6 +24,7 @@
       </div>
       </div>
     </div>
+    <notifications v-if="showNotification" />
     <search-bar class="search" />
   </div>
 </template>

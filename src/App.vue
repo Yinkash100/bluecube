@@ -9,10 +9,6 @@
       <div class="images">
         <image-result v-for="(eachImage, index) in images" :key="index" :currentImage="eachImage" />
       </div>
-      <div class="result">
-<!--        {{ images }}-->
-        {{ $store.state.currentUrl }}
-      </div>
     </div>
   </div>
 </template>
@@ -45,7 +41,6 @@ export default {
   },
   async mounted() {
     await this.$axios.get('/search/photos?query=people').then((resp)=>{
-      console.log('images = ', resp.data.results);
       this.$store.commit('updateImages', resp.data.results);
     }).catch((error)=>{
       console.log('An error occured /n ', error)

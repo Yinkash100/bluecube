@@ -38,7 +38,6 @@
     },
     methods: {
       async searchImage() {
-        console.log('the value => ', );
         const searchUrl = this.$store.state.currentUrl + '+' + this.searchItem;
         await this.$axios.get(searchUrl).then((resp) => {
           this.$store.commit('updateImages', resp.data.results);

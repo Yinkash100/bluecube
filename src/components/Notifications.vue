@@ -56,10 +56,11 @@
   background-color: $color-white;
   border: 1px solid $color-text;
   border-radius: 7.5px;
-  min-width: 300px;
+  max-width: 300px;
   width: 100%;
   position: absolute;
   top: 4rem;
+  right: 0;
   z-index: 2;
   &-item {
     display: flex;
