@@ -1,28 +1,101 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div id="app" class="app">
+    <div class="app-sidebar" :class="showSidebar ? 'show-sidebar' : '' ">
+      <side-bar @toggleSidebar="toggleShowSideBar" />
+    </div>
+    <div class="app-main">
+      <top-bar @toggleSidebar="toggleShowSideBar" />
+      <search-filter />
+      <div class="images">
+        <image-result v-for="(eachImage, index) in images" :key="index" :currentImage="eachImage" />
+      </div>
+      <div class="result">
+<!--        {{ images }}-->
+        {{ $store.state.currentUrl }}
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
 
+import TopBar from "@/components/TopBar";
+import SearchFilter from "./components/SearchFilter";
+import ImageResult from "@/components/ImageResult";
+import SideBar  from "@/components/SideBar";
+import store from "@/vuex.js"
 export default {
   name: 'App',
   components: {
-    HelloWorld
+    SideBar,
+    ImageResult,
+    SearchFilter,
+    TopBar
+  },
+  store,
+  data(){
+    return {
+      showSidebar: false,
+    }
+  },
+  computed: {
+    images(){
+      return this.$store.state.images
+    }
+  },
+  async mounted() {
+    await this.$axios.get('/search/photos?query=people').then((resp)=>{
+      console.log('images = ', resp.data.results);
+      this.$store.commit('updateImages', resp.data.results);
+    }).catch((error)=>{
+      console.log('An error occured /n ', error)
+    });
+    // await this.$axios.get('/me').then((resp)=>{
+    //   console.log('myself = ', resp.data);
+    //   return resp.data
+    // }).catch((error)=>{
+    //   console.log('An error occured /n ', error)
+    // });
+  },
+  methods: {
+    toggleShowSideBar() {
+      this.showSidebar = !this.showSidebar;
+    }
   }
 }
 </script>
 
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+@import "@/assets/scss/main.scss";
+</style>
+<style lang="scss" scoped>
+.app{
+  display: flex;
+  flex-wrap: nowrap;
+  &-sidebar{
+    display: inline-block;
+    background-color: $color-white;
+    @include respond(tab-land){
+      display: none;
+    }
+  }
+  &-main{
+    display: inline-block;
+    width: calc(100vw - 300px);
+    @include respond(tab-land){
+      display: block;
+      width: 100%;
+    }
+  }
+}
+.images {
+  margin: 3rem 0;
+}
+.show-sidebar {
+  display: block;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
 }
 </style>
