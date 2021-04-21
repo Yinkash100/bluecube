@@ -91,12 +91,6 @@
     }
 
   }
-  &:hover > button {
-    display: none;
-  }
-  &:hover  .btn {
-    display: inline-block;
-  }
 
 }
 .image .image-info .image-buttons {
@@ -110,6 +104,18 @@
   background-color: $color-white;
 }
 .image:hover .image-info .image-info-location {
-  coloe: $color-text;
+  color: $color-text;
+}
+@media (hover: none) {
+  .image .image-info {
+    color: $color-primary;
+    background-color: rgba($color-white, 0.5);
+  }
+  .image .image-info .image-info-location {
+    color: $color-primary;
+  }
+  .image .image-info .image-buttons {
+    display: block;
+  }
 }
 </style>
